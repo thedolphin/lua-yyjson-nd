@@ -24,6 +24,7 @@ jobs:
     - name: Pack sources
       run: |
         ARCHIVE_NAME="yyjson-nd-${GITHUB_REF_NAME}"
+        mkdir dist
         tar czf dist/${ARCHIVE_NAME}.tar.gz --exclude=".git*" --exclude "./dist" --transform="s,^,${ARCHIVE_NAME}/," .
 
     - name: Publish artifacts
