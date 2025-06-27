@@ -20,20 +20,25 @@ jobs:
       run: |
         ARCHIVE_NAME="yyjson-nd-${GITHUB_REF_NAME}"
         tar czf ${ARCHIVE_NAME}.tar.gz --exclude=".git*" --exclude "*.rockspec" --transform="s,^,${ARCHIVE_NAME}/," -C src .
-        envsubst < src/yyjson-nd.rockspec > ${ARCHIVE_NAME}.rockspec
-        zip ${ARCHIVE_NAME}.src.rock ${ARCHIVE_NAME}.rockspec ${ARCHIVE_NAME}.tar.gz
-        sudo apt-get -q update && sudo apt-get -qy install lua-json luarocks
-        luarocks build --pack-binary-rock ${ARCHIVE_NAME}.src.rock
 
-    - name: Publish artifacts
+    - name: Publish sources
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          yyjson-nd-*.linux-x86_64.rock
           yyjson-nd-*.tar.gz
-          yyjson-nd-*.src.rock
 
     - name: Publish to Luarocks
       run: |
           ARCHIVE_NAME="yyjson-nd-${GITHUB_REF_NAME}"
+          envsubst < src/yyjson-nd.rockspec > ${ARCHIVE_NAME}.rockspec
+          sudo apt-get -q update && sudo apt-get -qy install lua-json luarocks
+          luarocks pack ${ARCHIVE_NAME}.rockspec
+          luarocks build --pack-binary-rock ${ARCHIVE_NAME}.src.rock
           luarocks upload ${ARCHIVE_NAME}.rockspec ${ARCHIVE_NAME}.src.rock --api-key ${{ secrets.LUAROCKS_TOKEN }}
+
+    - name: Publish packs
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          yyjson-nd-*.linux-x86_64.rock
+          yyjson-nd-*.src.rock
