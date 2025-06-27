@@ -23,7 +23,6 @@ jobs:
         envsubst < src/yyjson-nd.rockspec > ${ARCHIVE_NAME}.rockspec
         zip ${ARCHIVE_NAME}.src.rock ${ARCHIVE_NAME}.rockspec ${ARCHIVE_NAME}.tar.gz
         sudo apt-get update && sudo apt-get install luarocks
-        yyjson-nd-0.1.2-1.linux-x86_64.rock
         luarocks build --pack-binary-rock ${ARCHIVE_NAME}.src.rock
         luarocks upload ${ARCHIVE_NAME}.rockspec ${ARCHIVE_NAME}.src.rock --api-key ${LUAROCKS_TOKEN}
 
