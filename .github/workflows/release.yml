@@ -16,7 +16,7 @@ jobs:
         submodules: recursive
         path: src
 
-    - name: Pack sources and publish to Luarocks
+    - name: Pack sources
       run: |
         ARCHIVE_NAME="yyjson-nd-${GITHUB_REF_NAME}"
         tar czf ${ARCHIVE_NAME}.tar.gz --exclude=".git*" --exclude "*.rockspec" --transform="s,^,${ARCHIVE_NAME}/," -C src .
@@ -24,7 +24,6 @@ jobs:
         zip ${ARCHIVE_NAME}.src.rock ${ARCHIVE_NAME}.rockspec ${ARCHIVE_NAME}.tar.gz
         sudo apt-get -q update && sudo apt-get -qy install lua-json luarocks
         luarocks build --pack-binary-rock ${ARCHIVE_NAME}.src.rock
-        luarocks upload ${ARCHIVE_NAME}.rockspec ${ARCHIVE_NAME}.src.rock --api-key ${{ secrets.LUAROCKS_TOKEN }}
 
     - name: Publish artifacts
       uses: softprops/action-gh-release@v2
@@ -33,3 +32,8 @@ jobs:
           yyjson-nd-*.linux-x86_64.rock
           yyjson-nd-*.tar.gz
           yyjson-nd-*.src.rock
+
+    - name: Publish to Luarocks
+      run: |
+          ARCHIVE_NAME="yyjson-nd-${GITHUB_REF_NAME}"
+          luarocks upload ${ARCHIVE_NAME}.rockspec ${ARCHIVE_NAME}.src.rock --api-key ${{ secrets.LUAROCKS_TOKEN }}
