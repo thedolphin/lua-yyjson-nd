@@ -22,7 +22,7 @@ jobs:
         tar czf ${ARCHIVE_NAME}.tar.gz --exclude=".git*" --exclude "*.rockspec" --transform="s,^,${ARCHIVE_NAME}/," -C src .
         envsubst < src/yyjson-nd.rockspec > ${ARCHIVE_NAME}.rockspec
         zip ${ARCHIVE_NAME}.src.rock ${ARCHIVE_NAME}.rockspec ${ARCHIVE_NAME}.tar.gz
-        sudo apt-get update && sudo apt-get -y install luarocks
+        sudo apt-get -q update && sudo apt-get -qy install lua-json luarocks
         luarocks build --pack-binary-rock ${ARCHIVE_NAME}.src.rock
         luarocks upload ${ARCHIVE_NAME}.rockspec ${ARCHIVE_NAME}.src.rock --api-key ${{ secrets.LUAROCKS_TOKEN }}
 
