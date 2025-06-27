@@ -1,0 +1,33 @@
+name: Release to LuaRocks
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout repo with submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    # - name: Install Lua
+    #   uses: leafo/gh-actions-lua@v11
+
+    # - name: Install Luarocks
+    #   uses: leafo/gh-actions-luarocks@v5
+
+    - name: Pack sources
+      run: |
+        ARCHIVE_NAME="yyjson-nd-${GITHUB_REF_NAME}"
+        tar czf dist/${ARCHIVE_NAME}.tar.gz --exclude=".git*" --exclude "./dist" --transform="s,^,${ARCHIVE_NAME}/," .
+
+    - name: Publish artifacts
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          dist/*.tar.gz
