@@ -12,7 +12,7 @@ JSON array creation is currently unsupported
 1. `load_mut` - parses JSON into a mutable document
 1. `new` - creates a new mutable JSON document
 1. `null` - null constant
-1. `tostring(<mutable obj` - serializes a mutable JSON object to a string
+1. `tostring(<mutable document>)` - serializes a mutable JSON object to a string
 
 # Examples
 ```lua
