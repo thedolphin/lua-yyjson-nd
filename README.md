@@ -37,3 +37,11 @@ j.copy = j.object -- copy subtrees, even between different documents
 tostring(j) -- full document
 tostring(j.object) -- document part
 ```
+
+# Luarocks
+
+[Available on luarocks.org](https://luarocks.org/modules/thedolphin/yyjson-nd)
+
+```shell
+$ luarocks install yyjson-nd
+```
