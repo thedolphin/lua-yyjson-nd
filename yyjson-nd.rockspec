@@ -1,9 +1,8 @@
 package = "yyjson-nd"
-version = "0.0.0-0"
+version = "${GITHUB_REF_NAME}"
 
 source = {
-  url = "",
-  md5 = ""
+  url = "https://github.com/thedolphin/lua-yyjson-nd/releases/download/${GITHUB_REF_NAME}/yyjson-nd-${GITHUB_REF_NAME}.tar.gz"
 }
 
 description = {
