@@ -16,6 +16,9 @@ jobs:
         submodules: recursive
         path: src
 
+    - name: Install Lua
+      uses: leafo/gh-actions-lua@v11
+
     - name: Install Luarocks
       uses: leafo/gh-actions-luarocks@v5
 
