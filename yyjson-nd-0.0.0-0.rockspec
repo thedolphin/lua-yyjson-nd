@@ -1,8 +1,9 @@
 package = "yyjson-nd"
-version = "scm-1"
+version = "0.0.0-0"
 
 source = {
-  url = "git+https://github.com/thedolphin/lua-yyjson-nd.git",
+  url = "",
+  md5 = ""
 }
 
 description = {
@@ -24,7 +25,6 @@ dependencies = {
 build = {
   type = "command",
   build_command = [[
-    git submodule update --init --recursive &&
     mkdir yyjson.build && (cd yyjson.build && cmake ../yyjson && make) &&
     gcc -O2 -fPIC -I$(LUA_INCDIR) -Iyyjson/src -c lua_yyjson.c -o lua_yyjson.o &&
     gcc -shared -o yyjson-nd.so lua_yyjson.o yyjson.build/libyyjson.a
