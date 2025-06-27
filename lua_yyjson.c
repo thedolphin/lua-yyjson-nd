@@ -26,6 +26,11 @@
 
 #include <yyjson.h>
 
+#ifndef luaL_newlib
+#define luaL_newlib(L, l) \
+  (lua_newtable(L), luaL_register(L, NULL, l))
+#endif
+
 typedef struct yyjson_node_struct {
     yyjson_doc *doc;
     yyjson_val *root;
@@ -114,7 +119,7 @@ int lua_yyjson_index(lua_State *L) {
     if (node_type == YYJSON_TYPE_OBJ) {
         val = yyjson_obj_get(node->root, luaL_checkstring(L, 2));
     } else if (node_type == YYJSON_TYPE_ARR) {
-        val = yyjson_arr_get(node->root, luaL_checkint(L, 2));
+        val = yyjson_arr_get(node->root, luaL_checkinteger(L, 2));
     } else {
         return luaL_error(L, "attempt to index scalar value");
     }
@@ -162,7 +167,7 @@ int lua_yyjson_index_mut(lua_State *L) {
     if (node_type == YYJSON_TYPE_OBJ) {
         val = yyjson_mut_obj_get(node->mut_root, luaL_checkstring(L, 2));
     } else if (node_type == YYJSON_TYPE_ARR) {
-        val = yyjson_mut_arr_get(node->mut_root, luaL_checkint(L, 2));
+        val = yyjson_mut_arr_get(node->mut_root, luaL_checkinteger(L, 2));
     } else {
         return luaL_error(L, "attempt to index scalar value");
     }
@@ -275,7 +280,7 @@ int lua_yyjson_newindex_mut(lua_State *L) {
                                yyjson_mut_strncpy(node->mut_doc, key, keylen),
                                newval);
         } else if (node_type == YYJSON_TYPE_ARR) {
-            keylen = luaL_checkint(L, 2);
+            keylen = luaL_checkinteger(L, 2);
             yyjson_mut_arr_remove(node->mut_root, keylen);
             yyjson_mut_arr_insert(node->mut_root, newval, keylen);
         } else {
@@ -285,7 +290,7 @@ int lua_yyjson_newindex_mut(lua_State *L) {
         key = luaL_checklstring(L, 2, &keylen);
         yyjson_mut_obj_remove_keyn(node->mut_root, key, keylen);
     } else if (node_type == YYJSON_TYPE_ARR) {
-        yyjson_mut_arr_remove(node->mut_root, luaL_checkint(L, 2));
+        yyjson_mut_arr_remove(node->mut_root, luaL_checkinteger(L, 2));
     } else {
         return luaL_error(L, "attempt to index scalar value");
     }
