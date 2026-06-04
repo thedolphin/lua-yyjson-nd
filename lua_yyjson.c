@@ -68,7 +68,7 @@ int lua_yyjson_load(lua_State *L) {
     memset(node, 0, sizeof(yyjson_node));
 
     yyjson_read_err err;
-    node->doc = yyjson_read_opts((char *)json, jsonlen, 0, NULL, &err);
+    node->doc = yyjson_read_opts((char *)json, jsonlen, YYJSON_READ_BIGNUM_AS_RAW, NULL, &err);
     if (node->doc == NULL)
         return luaL_error(L, "error parsing json at %d: %s", err.pos, err.msg);
 
@@ -91,7 +91,7 @@ int lua_yyjson_load_mut(lua_State *L) {
     memset(node, 0, sizeof(yyjson_mut_node));
 
     yyjson_read_err err;
-    yyjson_doc *doc = yyjson_read_opts((char *)json, jsonlen, 0, NULL, &err);
+    yyjson_doc *doc = yyjson_read_opts((char *)json, jsonlen, YYJSON_READ_BIGNUM_AS_RAW, NULL, &err);
     if (doc == NULL)
         return luaL_error(L, "error parsing json at %d: %s", err.pos, err.msg);
 
@@ -134,7 +134,10 @@ int lua_yyjson_index(lua_State *L) {
         lua_pushlightuserdata(L, NULL);
         break;
     case YYJSON_TYPE_STR:
-        lua_pushstring(L, yyjson_get_str(val));
+        lua_pushlstring(L, yyjson_get_str(val), yyjson_get_len(val));
+        break;
+    case YYJSON_TYPE_RAW:
+        lua_pushlstring(L, yyjson_get_raw(val), yyjson_get_len(val))
         break;
     case YYJSON_TYPE_BOOL:
         lua_pushboolean(L, yyjson_get_bool(val));
@@ -182,7 +185,10 @@ int lua_yyjson_index_mut(lua_State *L) {
         lua_pushlightuserdata(L, NULL);
         break;
     case YYJSON_TYPE_STR:
-        lua_pushstring(L, yyjson_mut_get_str(val));
+        lua_pushlstring(L, yyjson_get_str(val), yyjson_get_len(val));
+        break;
+    case YYJSON_TYPE_RAW:
+        lua_pushlstring(L, yyjson_get_raw(val), yyjson_get_len(val))
         break;
     case YYJSON_TYPE_BOOL:
         lua_pushboolean(L, yyjson_mut_get_bool(val));

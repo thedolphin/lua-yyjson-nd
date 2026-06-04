@@ -14,7 +14,8 @@ description = {
     and improving performance compared to full eager decoding.
   ]],
   homepage = "https://github.com/thedolphin/lua-yyjson-nd",
-  license = "MIT"
+  license = "MIT",
+  maintainer = "Alexander Rumyantsev"
 }
 
 dependencies = {
