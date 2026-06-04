@@ -137,7 +137,7 @@ int lua_yyjson_index(lua_State *L) {
         lua_pushlstring(L, yyjson_get_str(val), yyjson_get_len(val));
         break;
     case YYJSON_TYPE_RAW:
-        lua_pushlstring(L, yyjson_get_raw(val), yyjson_get_len(val))
+        lua_pushlstring(L, yyjson_get_raw(val), yyjson_get_len(val));
         break;
     case YYJSON_TYPE_BOOL:
         lua_pushboolean(L, yyjson_get_bool(val));
@@ -188,7 +188,7 @@ int lua_yyjson_index_mut(lua_State *L) {
         lua_pushlstring(L, yyjson_get_str(val), yyjson_get_len(val));
         break;
     case YYJSON_TYPE_RAW:
-        lua_pushlstring(L, yyjson_get_raw(val), yyjson_get_len(val))
+        lua_pushlstring(L, yyjson_get_raw(val), yyjson_get_len(val));
         break;
     case YYJSON_TYPE_BOOL:
         lua_pushboolean(L, yyjson_mut_get_bool(val));
